@@ -1,3 +1,5 @@
 from django.shortcuts import render
 
-# Create your views here.
+
+def view_practice(request):
+    return render(request, "rooms/home.html")
