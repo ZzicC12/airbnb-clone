@@ -28,6 +28,10 @@ class SignUpForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)
     password1 = forms.CharField(widget=forms.PasswordInput, label="Confirm Password")
 
+    def clean_email(self):
+        if not self.validate_unique():
+            self.add_error("email", forms.ValidationError("Email is not unique!!"))
+
     def clean_password1(self):
         password = self.cleaned_data.get("password")
         password1 = self.cleaned_data.get("password1")
@@ -37,6 +41,7 @@ class SignUpForm(forms.ModelForm):
             return password
 
     def save(self, *args, **kwargs):
+
         user = super().save(commit=False)
         email = self.cleaned_data.get("email")
         password = self.cleaned_data.get("password")
